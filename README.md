@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Tasks
 
 - Clone this React App Skeleton, create a separate branch for yourself
-- Make an API call to the Space X launches (axios is already installed in package.json)
+- Make an API call to the Space X launches `https://api.spacexdata.com/v3/launches` (axios is already installed in package.json)
 - Save the data returned from the API call in a variable
 - Display the data (name & flight number only `Mission Name - 1`) in a new component called ResultCard
 - Create a new component called AgeGuesser
