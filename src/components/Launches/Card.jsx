@@ -1,6 +1,5 @@
-import Card from "components/UI/Card.jsx";
+import Card from "components/UI/Card";
 import React from "react";
-import isEmpty from "lodash/isEmpty";
 import Loading from "./Loading";
 import Results from "./Results";
 
@@ -8,11 +7,12 @@ class Launches extends React.Component {
   constructor(props) {
     super(props);
     this.state = { result: {}, loading: true };
-    this.hasResult = () => !isEmpty(this.state.result);
   }
+
   async componentDidMount() {
     await this.getLaunches();
   }
+
   async getLaunches() {
     try {
       const response = await fetch("https://api.spacexdata.com/v3/launches", {
@@ -21,17 +21,16 @@ class Launches extends React.Component {
       const result = await response.json();
       this.setState({ result: result.reverse(), loading: false });
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }
+
   render() {
+    const { loading, result } = this.state;
     return (
       <Card title="Launches">
-        {this.state.loading ? (
-          <Loading />
-        ) : (
-          <Results rows={this.state.result} />
-        )}
+        {loading ? <Loading /> : <Results rows={result} />}
       </Card>
     );
   }

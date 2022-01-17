@@ -1,7 +1,9 @@
+import React from "react";
+import PropTypes from "prop-types";
 import LaunchItem from "./LaunchItem";
 
-const Results = (props) => {
-  const items = props.rows.map((row) => (
+function Results({ rows }) {
+  const items = rows.map((row) => (
     <LaunchItem key={row.mission_name} row={row} />
   ));
   return (
@@ -9,6 +11,10 @@ const Results = (props) => {
       {items}
     </ul>
   );
+}
+
+Results.propTypes = {
+  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Results;

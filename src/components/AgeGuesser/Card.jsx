@@ -1,43 +1,52 @@
 import Card from "components/UI/Card";
 import SearchInput from "components/UI/Input";
-import Result from "./Result";
 import React from "react";
 import isEmpty from "lodash/isEmpty";
+import Result from "./Result";
 
 class AgeGuesser extends React.Component {
   constructor(props) {
     super(props);
     this.state = { value: "", result: {} };
-    this.hasResult = () => !isEmpty(this.state.result);
+    this.onSetValue = this.onSetValue.bind(this);
   }
-  async getResult() {
-    try {
-      const response = await fetch(
-        `https://api.agify.io/?name=${this.state.value}`
-      );
-      const result = await response.json();
-      this.setState({ result });
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  async onSetValue(value) {
-    this.setState({ value });
-    if (this.state.value.length > 0) {
+
+  async onSetValue({ target: { value: term } }) {
+    this.setState({ value: term });
+
+    const { value } = this.state;
+    if (value.length > 0) {
       await this.getResult();
     } else {
       this.setState({ value: "", result: {} });
     }
   }
+
+  async getResult() {
+    try {
+      const { value } = this.state;
+      const response = await fetch(`https://api.agify.io/?name=${value}`);
+      const result = await response.json();
+      this.setState({ result });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
+  hasResult() {
+    const { result } = this.state;
+    return !isEmpty(result);
+  }
+
   render() {
+    const { value, result } = this.state;
     return (
       <Card title="Age Guesser">
         <form onSubmit={(e) => e.preventDefault()} autoComplete="off">
-          <SearchInput onChangeValue={this.onSetValue.bind(this)} />
+          <SearchInput value={value} onChangeValue={this.onSetValue} />
         </form>
-        {this.hasResult() && (
-          <Result result={this.state.result} name={this.state.value} />
-        )}
+        {this.hasResult() && <Result result={result} name={value} />}
       </Card>
     );
   }

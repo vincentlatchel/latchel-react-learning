@@ -1,34 +1,51 @@
-import React, { useEffect, useMemo, useCallback } from "react";
+import React from "react";
 import debounce from "lodash/debounce";
+import PropTypes from "prop-types";
 
-const Input = (props) => {
-  const onChangeValue = useCallback(
-    (event) => props.onChangeValue(event.target.value),
-    [props]
-  );
-  const debouncedChangeHandler = useMemo(
-    () => debounce(onChangeValue, props.delay || 300),
-    [props, onChangeValue]
-  );
-  useEffect(() => {
-    return () => {
-      debouncedChangeHandler.cancel();
-    };
-  }, [debouncedChangeHandler]);
+class SearchInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { delay: props.delay || 300, callback: props.onChangeValue };
+    this.onInputChange = this.onInputChange.bind(this);
+  }
 
-  return (
-    <input
-      type="search"
-      name="name"
-      id="name"
-      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-      placeholder="Enter Name..."
-      autoComplete="off"
-      autosuggest="off"
-      value={props.value}
-      onChange={debouncedChangeHandler}
-    />
-  );
+  componentDidMount() {
+    const { delay, callback } = this.state;
+    this.delayedCallback = debounce(callback, delay);
+  }
+
+  componentWillUnmount() {
+    this.delayedCallback.cancel();
+  }
+
+  onInputChange(e) {
+    e.persist();
+    this.delayedCallback(e);
+  }
+
+  render() {
+    return (
+      <input
+        type="search"
+        name="name"
+        id="name"
+        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+        placeholder="Enter Name..."
+        autoComplete="off"
+        autosuggest="off"
+        onChange={this.onInputChange}
+      />
+    );
+  }
+}
+
+SearchInput.defaultProps = {
+  delay: 300,
 };
 
-export default Input;
+SearchInput.propTypes = {
+  delay: PropTypes.number,
+  onChangeValue: PropTypes.func.isRequired,
+};
+
+export default SearchInput;

@@ -1,13 +1,16 @@
-const VideoLink = ({
-  row: {
-    links: { video_link },
-  },
-}) => {
+import React from "react";
+import PropTypes from "prop-types";
+
+function VideoLink({ link }) {
   return (
-    <a href={video_link} target="_blank" title="Watch Video" rel="noreferrer">
+    <a href={link} target="_blank" title="Watch Video" rel="noreferrer">
       🎥
     </a>
   );
+}
+
+VideoLink.propTypes = {
+  link: PropTypes.string.isRequired,
 };
 
 export default VideoLink;

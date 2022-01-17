@@ -1,6 +1,7 @@
 import "./App.css";
 import AgeGuesser from "components/AgeGuesser/Card";
 import Launches from "components/Launches/Card";
+import React from "react";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Launches />
         </div>
       </div>
-  </div>
+    </div>
   );
 }
 
