@@ -5,13 +5,12 @@ import PropTypes from "prop-types";
 class SearchInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { delay: props.delay || 300, callback: props.onChangeValue };
     this.onInputChange = this.onInputChange.bind(this);
   }
 
   componentDidMount() {
-    const { delay, callback } = this.state;
-    this.delayedCallback = debounce(callback, delay);
+    const { delay, onChangeValue } = this.props;
+    this.delayedCallback = debounce(onChangeValue, delay);
   }
 
   componentWillUnmount() {
