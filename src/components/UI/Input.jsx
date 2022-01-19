@@ -3,8 +3,8 @@ import debounce from "lodash/debounce";
 import PropTypes from "prop-types";
 
 class SearchInput extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.onInputChange = this.onInputChange.bind(this);
   }
 

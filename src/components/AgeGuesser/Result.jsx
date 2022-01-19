@@ -12,7 +12,7 @@ function Result({ name, result: { age } }) {
 Result.propTypes = {
   name: PropTypes.string.isRequired,
   result: PropTypes.shape({
-    age: PropTypes.number.isRequired,
+    age: PropTypes.number,
   }).isRequired,
 };
 
